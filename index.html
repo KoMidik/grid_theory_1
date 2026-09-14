@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Памятка по CSS Grid</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+    line-height: 1.5;
+    color: #0f172a;
+    background: #ffffff;
+  }
+
+  h1 { font-size: 24px; margin: 0 0 30px; }
+  h2 {
+    font-size: 18px;
+    margin: 40px 0 12px;
+    padding-top: 16px;
+    border-top: 2px solid #e2e8f0;
+  }
+  h3 { font-size: 15px; margin: 20px 0 8px; }
+
+  code {
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+  }
+
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  figure {
+    margin: 20px 0;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  figure img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  figcaption {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Памятка по CSS Grid (теория)</h1>
+
+<p>CSS Grid (сетка) — двумерная система раскладки. Управляет одновременно строками и колонками.</p>
+
+<!-- ============================================================ -->
+<h2>1. Главные понятия: из чего состоит грид</h2>
+
+<h3>Грид-контейнер (grid container)</h3>
+<p>Обычный блок, которому задали <code>display: grid</code>. Все ПРЯМЫЕ потомки становятся грид-элементами и начинают подчиняться правилам сетки. Снаружи контейнер ведёт себя как обычный блочный элемент.</p>
+<pre>.grid { display: grid; }
+.grid-inline { display: inline-grid; }</pre>
+
+<h3>Грид-элемент (grid item)</h3>
+<p>Любой прямой ребёнок грид-контейнера. Автоматически становится ячейкой сетки.</p>
+
+<h3>Грид-линия (grid line)</h3>
+<p>Разделительная линия, формирующая структуру. Идёт по обе стороны от каждой колонки и каждого ряда. Бывает вертикальная (между колонками) и горизонтальная (между рядами).</p>
+<p>ВАЖНО: линий ВСЕГДА на одну больше, чем колонок (или рядов).</p>
+<ul>
+  <li>3 колонки → 4 вертикальные линии.</li>
+  <li>2 ряда → 3 горизонтальные линии.</li>
+</ul>
+<p>Линии автоматически нумеруются, начиная с 1. Слева направо и сверху вниз. Линиям можно давать свои имена.</p>
+
+<h3>Грид-трек (grid track) / грид-полоса</h3>
+<p>Пространство между двумя соседними линиями. Проще говоря — одна колонка или один ряд. Когда пишешь <code>grid-template-columns: 200px 1fr auto</code> — ты задаёшь ТРИ трека.</p>
+
+<h3>Грид-ячейка (grid cell)</h3>
+<p>Пересечение одного ряда и одной колонки. Самая маленькая единица сетки. Каждый обычный элемент по умолчанию занимает ровно одну ячейку.</p>
+
+<h3>Грид-область (grid area)</h3>
+<p>Одна или несколько ячеек, ограниченных четырьмя линиями. ЖЕЛЕЗНОЕ ПРАВИЛО: область всегда ПРЯМОУГОЛЬНИК. Нельзя сделать область в форме буквы «Г» или «L» — браузер проигнорирует.</p>
+
+<figure>
+  <img src="img/рис_1_1.png" alt="Общая схема грида">
+  <figcaption>Рисунок 1.1 — общая схема грида: контейнер, линии, треки, ячейки, область</figcaption>
+</figure>
+
+<figure>
+  <img src="img/рис_1_2.png" alt="Область может быть только прямоугольником">
+  <figcaption>Рисунок 1.2 — область может быть только прямоугольником</figcaption>
+</figure>
+
+<!-- ============================================================ -->
+<h2>2. Колонки и ряды: явная сетка</h2>
+
+<p><code>grid-template-columns</code> — количество и ширина колонок. Значения через пробел. Сколько значений — столько колонок.</p>
+<pre>grid-template-columns: 200px 40% auto;    /* 3 колонки */
+grid-template-columns: 100px 100px 100px; /* 3 колонки по 100px */</pre>
+
+<p><code>grid-template-rows</code> — количество и высота рядов. Синтаксис тот же.</p>
+<pre>grid-template-rows: 100px 200px;          /* 2 ряда */</pre>
+
+<p>Любые единицы измерения: px, %, em, rem, vh, vw и т.д.</p>
+
+<h3>Шорткат grid-template</h3>
+<p>Объединяет rows и columns в одну строку. Сначала ряды, потом слэш, потом колонки.</p>
+<pre>grid-template: 100px 200px / 200px 40% auto;
+/*              ↑ ряды     ↑ колонки */</pre>
+
+<figure>
+  <img src="img/рис_2_1.png" alt="Явная сетка">
+  <figcaption>Рисунок 2.1 — явная сетка: 3 колонки × 2 ряда</figcaption>
+</figure>
+
+<figure>
+  <img src="img/рис_2_2.png" alt="Шорткат grid-template">
+  <figcaption>Рисунок 2.2 — шорткат grid-template: ряды / колонки</figcaption>
+</figure>
+
+<!-- ============================================================ -->
+<h2>3. Единица fr — доля свободного пространства</h2>
+
+<p><code>fr</code> = fraction (доля). Появилась специально для Grid. Отвечает за СВОБОДНОЕ пространство внутри контейнера.</p>
+<p>ВАЖНО: fr считается ПОСЛЕ того, как размещены фиксированные размеры (px, %, auto). Т.е. сначала браузер выделяет 400px под колонку с 400px, а уже остаток делит между колонками с fr.</p>
+<pre>grid-template-columns: 1fr 1fr 1fr;      /* 3 равные колонки */
+grid-template-columns: 2fr 400px 1fr;    /* сначала 400px, потом 2:1 */</pre>
+
+<figure>
+  <img src="img/рис_3_1.png" alt="Как работает fr">
+</figure>
+
+<!-- ============================================================ -->
+<h2>4. Функция repeat() — повторение треков</h2>
+
+<p>Избавляет от дублирования однотипных значений. Первый аргумент — сколько раз повторить. Второй аргумент — что повторить.</p>
+<pre>grid-template-columns: 1fr 1fr 1fr;       /* длинно если придётся создавать больше стобцов */
+grid-template-columns: repeat(3, 1fr);    /* коротко */</pre>
+<p>Можно повторять группы значений:</p>
+<pre>grid-template-columns: repeat(3, 100px 1fr); /* 100px 1fr 100px 1fr 100px 1fr */</pre>
+
+<figure>
+  <img src="img/рис_4_1.png" alt="repeat даёт тот же результат">
+</figure>
+
+<figure>
+  <img src="img/рис_4_2.png" alt="repeat с группой значений">
+</figure>
+
+</body>
+</html>
